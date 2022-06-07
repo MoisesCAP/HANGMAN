@@ -14,11 +14,13 @@
 # Haz una interfaz lo mas amigable posible 
 
 def run():
-    with open('C:/Users/Brunilda/Desktop/PROGRAMMING/data_ahorcado.txt', 'r', encoding='utf-8') as f:
+    with open('./data_ahorcado.txt', 'r', encoding='utf-8') as f:
         list_words = []
         for i in f:
             list_words.append(i)
         f.close()
+        print(list_words[1])
+
 
 if __name__ == '__main__':
     run()
