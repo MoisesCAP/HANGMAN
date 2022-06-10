@@ -26,7 +26,7 @@ def interface(data_list, hangman_pictures, contador):
     print()
 
     secret_word = random.choice(data_list).replace('\n','')
-
+    
     print('Palabra a adivinar: ','_ '*len(secret_word))
     print()
     print('='*40)
@@ -57,6 +57,9 @@ def interface(data_list, hangman_pictures, contador):
                     break
 
         if  VIDAS == 0:
+            os.system('clear')
+            # print(hangman_pictures[6])
+            print(f'PERDISTE! VIDAS = {VIDAS}')
             break
         else:
             os.system('clear')
@@ -78,10 +81,6 @@ def interface(data_list, hangman_pictures, contador):
             else: 
                 print(f'GANASTE! la palabra era "{secret_word}"')
                 break
-
-    os.system('clear')
-    # print(hangman_pictures[6])
-    print(f'PERDISTE! VIDAS = {VIDAS}')
 
 def run(contador):
 
