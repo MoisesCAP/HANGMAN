@@ -1,21 +1,9 @@
-#---------------REGLAS-----------------
-# Debes usar los conceptos vistos en el curso, como por ejemplo: list y dict comprehension,
-# manejo de errores (assert, try y except, rais) y manejo de archivos (data.txt)
-# aplica os.sys('clear') para limpiar la pantalla despues que el usuario ingresa una letra,
-#  esto en forma de bucle
-
-#---------------AYUDAS-----------------
-# investiga sobre la funcion 'enumerate'
-# el metodo 'get' para los diccionarios puede servir
-
-#---------------MEJORAS----------------
-# Implementa codigo ASCII para dibujar 
-# Añade un sistema de puntos cada ves que el usuario adivine una palabra
-# Haz una interfaz lo mas amigable posible 
 
 import os
 import random
+import time
 
+contador = 0
 hangman_pictures = ['''
     +---+
     |   |
@@ -74,8 +62,8 @@ hangman_pictures = ['''
         |
     =========''']
 
-
-def interface(data_list, contador):
+# Base del juego
+def interface(data_list,contador):
     list_words = [] 
     wrong_words = []
 
@@ -95,15 +83,18 @@ def interface(data_list, contador):
             print()
             user_word = input('Ingresa una letra: ').lower().replace(' ','')
             print()
+            assert user_word.islower(), "Ingresa una letra valida..."
+            
             if user_word in list_words or user_word in wrong_words:
                 print('Ya ingresaste esa letra, prueba con otra...')
+                time.sleep(1.5)
                 print()
                 break
-
+            
             if user_word in secret_word:
                 list_words.append(user_word)
                 break
-
+            
             else:
                 contador += 1
                 VIDAS -= 1
@@ -112,6 +103,7 @@ def interface(data_list, contador):
                     break
                 else:
                     print('Fallaste...')
+                    time.sleep(1)
                     break
 
         if  VIDAS == 0:
@@ -119,6 +111,7 @@ def interface(data_list, contador):
             print(hangman_pictures[6])
             print(f'PERDISTE! VIDAS = {VIDAS}')
             break
+
         else:
             os.system('clear')
             print()
@@ -137,25 +130,26 @@ def interface(data_list, contador):
                 print(status)
 
             else: 
+                print()
                 print(f'GANASTE! la palabra era "{secret_word}"')
+                print()
                 break
 
-
-def run(contador):
+# Funcion que guarda el contenido de "data_ahorcado" en una lista 
+def run():
 
     print()
     print('BIENVENIDO AL JUEGO DEL AHORCADO')
 
     with open('./data_ahorcado.txt', 'r', encoding='utf-8') as f:
-        data_list = []
-        for i in f:
-            data_list.append(i)
+        data_list = [i for i in f] # list comprehension
+
+    # Para imprimir la imagen correspondiente 
     print(hangman_pictures[contador])
     print()
 
-    interface(data_list, contador)
+    interface(data_list,contador) 
 
 
 if __name__ == '__main__':
-    contador = 0
-    run(contador)
+    run()
