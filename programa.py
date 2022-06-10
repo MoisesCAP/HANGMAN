@@ -16,8 +16,66 @@
 import os
 import random
 
+hangman_pictures = ['''
+    +---+
+    |   |
+        |
+        |
+        |
+        |
 
-def interface(data_list, hangman_pictures, contador):
+    =========''', '''
+
+    +---+
+    |   |
+    O   |
+        |
+        |
+        |
+    =========''', '''
+
+    +---+
+    |   |
+    O   |
+    |   |
+        |
+        |
+    =========''', '''
+
+    +---+
+    |   |
+    O   |
+    /|   |
+        |
+        |
+    =========''', '''
+
+    +---+
+    |   |
+    O   |
+    /|\  |
+        |
+        |
+    =========''', '''
+
+    +---+
+    |   |
+    O   |
+    /|\  |
+    /    |
+        |
+    =========''', '''
+
+    +---+
+    |   |
+    O   |
+    /|\  |
+    / \  |
+        |
+    =========''']
+
+
+def interface(data_list, contador):
     list_words = [] 
     wrong_words = []
 
@@ -58,7 +116,7 @@ def interface(data_list, hangman_pictures, contador):
 
         if  VIDAS == 0:
             os.system('clear')
-            # print(hangman_pictures[6])
+            print(hangman_pictures[6])
             print(f'PERDISTE! VIDAS = {VIDAS}')
             break
         else:
@@ -73,7 +131,7 @@ def interface(data_list, hangman_pictures, contador):
                     status += '_ '
 
             if status != secret_word:
-                # print(hangman_pictures[contador])
+                print(hangman_pictures[contador])
                 print(f'VIDAS = {VIDAS}')
                 print()
                 print(status)
@@ -81,6 +139,7 @@ def interface(data_list, hangman_pictures, contador):
             else: 
                 print(f'GANASTE! la palabra era "{secret_word}"')
                 break
+
 
 def run(contador):
 
@@ -91,15 +150,10 @@ def run(contador):
         data_list = []
         for i in f:
             data_list.append(i)
-    with open('./hangman_pictures.txt', 'r', encoding='utf-8') as m:
-        hangman_pictures = []
-        for i in m:
-            hangman_pictures.append(i)
-
-    # print(hangman_pictures[contador])
+    print(hangman_pictures[contador])
     print()
 
-    interface(data_list, hangman_pictures, contador)
+    interface(data_list, contador)
 
 
 if __name__ == '__main__':
