@@ -1,9 +1,16 @@
+# Python 3.10
+# Repositorio en SSH: git@github.com:MoisesCAP/HANGMAN.git
+# Repo. en HTTPS: https://github.com/MoisesCAP/HANGMAN.git
 
 import os
 import random
-import time
 
-contador = 0
+contador = 0 # Para llevar un orden de la imagen que se imprimirá
+status = '' # Para mostrar el estado de la adivinanza 
+list_words = [] # Para guardar las letras correctas 
+wrong_words = [] # Para guardar las letras erróneas
+VIDAS = 6 # Máximo de vidas
+
 hangman_pictures = ['''
     +---+
     |   |
@@ -62,84 +69,81 @@ hangman_pictures = ['''
         |
     =========''']
 
-# Base del juego
-def interface(data_list,contador):
-    list_words = [] 
-    wrong_words = []
-
-    VIDAS = 6
-    print(f'VIDAS = {VIDAS}')
-    print()
-
-    secret_word = random.choice(data_list).replace('\n','')
-    
-    print('Palabra a adivinar: ','_ '*len(secret_word))
-    print()
-    print('='*40)
-    print()
-    while True:
-        
-        while True:
-            print()
-            user_word = input('Ingresa una letra: ').lower().replace(' ','')
-            print()
-            assert user_word.islower(), "Ingresa una letra valida..."
-            
-            if user_word in list_words or user_word in wrong_words:
-                print('Ya ingresaste esa letra, prueba con otra...')
-                time.sleep(1.5)
-                print()
-                break
-            
-            if user_word in secret_word:
-                list_words.append(user_word)
-                break
-            
-            else:
-                contador += 1
-                VIDAS -= 1
-                wrong_words.append(user_word)
-                if VIDAS == 0:
-                    break
-                else:
-                    print('Fallaste...')
-                    time.sleep(1)
-                    break
-
-        if  VIDAS == 0:
+# Se encarga de mostrar los resultados de cada ejecución de la adivinanza
+def conclusion(VIDAS, secret_word, list_words, status):
+ 
+    if  VIDAS == 0:
             os.system('clear')
+            print()
             print(hangman_pictures[6])
             print(f'PERDISTE! VIDAS = {VIDAS}')
-            break
+            print(f'la palabra era "{secret_word}"')
+            print()
 
-        else:
+    else:
+        print()
+        
+        for i in secret_word:
+            if i in list_words:
+                status += i
+            else:
+                status += '_ '
+
+        if status != secret_word:
+            os.system('clear')
+            print(hangman_pictures[contador])
+            print(f'VIDAS = {VIDAS}')
+            print()
+            print(status)
+            
+            game(secret_word, list_words, wrong_words, VIDAS, contador)
+
+        else: 
             os.system('clear')
             print()
-            status = ''
+            print(f'GANASTE! la palabra era "{secret_word}"')
+            print()      
 
-            for i in secret_word:
-                if i in list_words:
-                    status += i
-                else:
-                    status += '_ '
 
-            if status != secret_word:
-                print(hangman_pictures[contador])
-                print(f'VIDAS = {VIDAS}')
-                print()
-                print(status)
+# Se encarga de establecer la interacción con el usuario
+def game(secret_word, list_words, wrong_words, VIDAS, contador):
+        
+    while True:
+        print()
+        user_word = input('Ingresa una letra: ')
+        print()
+        user_word = user_word.lower().replace(' ','')
+        print()
 
-            else: 
-                print()
-                print(f'GANASTE! la palabra era "{secret_word}"')
-                print()
+        assert user_word.islower(), "EL PROGRAMA SOLO ACEPTA LETRAS."
+        assert(len(user_word) == 1), "INGRESA UNA LETRA A LA VEZ"
+        
+        if user_word in list_words or user_word in wrong_words:
+            os.system('clear')
+            print('Ya ingresaste esa letra, prueba con otra...')
+            print()
+            break
+        
+        if user_word in secret_word:
+            list_words.append(user_word)
+            break
+        
+        else:
+            contador += 1
+            VIDAS -= 1
+            wrong_words.append(user_word)
+            if VIDAS == 0:
+                break
+            else:
+                os.system('clear')
+                print('Fallaste...')
                 break
 
-# Funcion que guarda el contenido de "data_ahorcado" en una lista 
-def run():
+    conclusion(VIDAS, secret_word, list_words, status)
+    
 
-    print()
-    print('BIENVENIDO AL JUEGO DEL AHORCADO')
+# Guarda el contenido de "data_ahorcado" en una lista y escoge la "secret_word"
+def run():
 
     with open('./data_ahorcado.txt', 'r', encoding='utf-8') as f:
         data_list = [i for i in f] # list comprehension
@@ -148,8 +152,21 @@ def run():
     print(hangman_pictures[contador])
     print()
 
-    interface(data_list,contador) 
+    secret_word = random.choice(data_list).replace('\n','')
+
+    print(f'VIDAS = {VIDAS}')
+    print()
+    
+    print('Palabra a adivinar: ','_ '*len(secret_word))
+    print()
+    print('='*40)
+    print()
+
+    game(secret_word, list_words, wrong_words, VIDAS, contador) 
 
 
+# INICIO
 if __name__ == '__main__':
-    run()
+    print()
+    print('BIENVENIDO AL JUEGO DEL AHORCADO')
+    run() 
