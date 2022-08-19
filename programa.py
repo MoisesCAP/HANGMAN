@@ -76,8 +76,8 @@ def conclusion(VIDAS, secret_word, list_words, status):
             os.system('clear')
             print()
             print(hangman_pictures[6])
-            print(f'PERDISTE! VIDAS = {VIDAS}')
-            print(f'la palabra era "{secret_word}"')
+            print()
+            print(f'PERDISTE! la palabra era "{secret_word}"')
             print()
 
     else:
@@ -92,6 +92,7 @@ def conclusion(VIDAS, secret_word, list_words, status):
         if status != secret_word:
             os.system('clear')
             print(hangman_pictures[picture])
+            print()
             print(f'VIDAS = {VIDAS}')
             print()
             print(status)
@@ -100,7 +101,6 @@ def conclusion(VIDAS, secret_word, list_words, status):
 
         else: 
             os.system('clear')
-            print()
             print(f'GANASTE! la palabra era "{secret_word}"')
             print()      
 
@@ -166,4 +166,9 @@ def run():
 if __name__ == '__main__':
     print()
     print('BIENVENIDO AL JUEGO DEL AHORCADO')
-    run() 
+    print() 
+    print('''
+NOTA: Ya sabes como jugar... Solo ten en cuenta que 
+las palabras a adivinar no tienen un tema en especifico
+''')
+    run()
