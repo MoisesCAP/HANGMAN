@@ -5,7 +5,7 @@
 import os
 import random
 
-contador = 0 # Para llevar un orden de la imagen que se imprimirá
+picture = 0 # Para llevar un orden de la imagen que se imprimirá
 status = '' # Para mostrar el estado de la adivinanza 
 list_words = [] # Para guardar las letras correctas 
 wrong_words = [] # Para guardar las letras erróneas
@@ -91,12 +91,12 @@ def conclusion(VIDAS, secret_word, list_words, status):
 
         if status != secret_word:
             os.system('clear')
-            print(hangman_pictures[contador])
+            print(hangman_pictures[picture])
             print(f'VIDAS = {VIDAS}')
             print()
             print(status)
             
-            game(secret_word, list_words, wrong_words, VIDAS, contador)
+            game(secret_word, list_words, wrong_words, VIDAS, picture)
 
         else: 
             os.system('clear')
@@ -110,13 +110,11 @@ def game(secret_word, list_words, wrong_words, VIDAS, contador):
         
     while True:
         print()
-        user_word = input('Ingresa una letra: ')
-        print()
-        user_word = user_word.lower().replace(' ','')
+        user_word = input('Ingresa una letra: ').lower()
         print()
 
         assert user_word.islower(), "EL PROGRAMA SOLO ACEPTA LETRAS."
-        assert(len(user_word) == 1), "INGRESA UNA LETRA A LA VEZ"
+        assert(len(user_word) == 1), "INGRESA UNA LETRA A LA VEZ."
         
         if user_word in list_words or user_word in wrong_words:
             os.system('clear')
@@ -147,9 +145,8 @@ def run():
 
     with open('./data_ahorcado.txt', 'r', encoding='utf-8') as f:
         data_list = [i for i in f] # list comprehension
-
-    # Para imprimir la imagen correspondiente 
-    print(hangman_pictures[contador])
+ 
+    print(hangman_pictures[picture])
     print()
 
     secret_word = random.choice(data_list).replace('\n','')
@@ -162,7 +159,7 @@ def run():
     print('='*40)
     print()
 
-    game(secret_word, list_words, wrong_words, VIDAS, contador) 
+    game(secret_word, list_words, wrong_words, VIDAS, picture) 
 
 
 # INICIO
